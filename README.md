@@ -31,9 +31,10 @@ virtual environment is already set up for you, and you can start working on the
 code.
 
 To work on the sample code, you'll need to clone your project's repository to your
-local computer. If you haven't, do that first. You can find instructions in the AWS CodeStar user guide at https://docs.aws.amazon.com/codestar/latest/userguide/getting-started.html#clone-repo.
+local computer. If you haven't, do that first. You can find instructions in the
+AWS CodeStar user guide.
 
-1. Install Node.js on your computer. For details on available installers visit
+1. Install Node.js on your computer.  For details on available installers visit
    https://nodejs.org/en/download/.
 
 2. Install NPM dependencies:

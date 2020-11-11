@@ -1,0 +1,8 @@
+{
+	"salt": "87Sxbw==", 	
+	"publicKeyUrl": "https://static.gc.apple.com/public-key/gc-prod-2.cer", 	
+	"signature": "l6e/lSxHqUdbf7/k32Dl5V3WPpV2zu7JM5OB90Gq85WgZeqM7K0mgQlahoCui0E0e0l1/034v3Xm/u3BZ33sq+LPEIP3KQpRSIpqgDSvr44GOlmtr4i/v0rlu7xrRZ0t/vFcwl2sJU3UPh1M19wq8Lox/y2/1Ug9oCplX+QJ7+Sq1TCJlKvcyK2FQbgnhewrCrP/hi1NfrkMRtziAwebGbpNwomsbTG/Reb7IdP0iWd1mqeqZq6XlyMJ2ScgNgelu4EgriUanCHu958UR31dR7eayWqPG+OvSkyElOmwH8CqJ2oNJ+gfY/rWirgqMP3kalZAqSbFJiOfWwwnS/2N+A==", 	
+	"timestamp": "1452781832356",
+	"playerId": "1013135833",
+	"bundleId": "com.zolostudios.audiorunner"
+}

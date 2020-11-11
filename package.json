@@ -3,13 +3,44 @@
   "description": "Sample NodeJs web application",
   "version": "0.0.1",
   "private": true,
-  "devDependencies": {
-    "mocha": "5.0.0",
-    "unit.js": "2.0.0",
-    "supertest": "3.0.0"
-  },
   "scripts": {
-    "start": "node app.js",
-    "test": "mocha --recursive tests --exit"
+    "build": "tsc",
+    "bcrypt": "npm install bcrypt",
+    "start": "npm run bcrypt && node app.js",
+    "prod": "npm run build && npm run start"
+  },
+  "dependencies": {
+    "arpad": "^1.0.2",
+    "bcryptjs": "^2.4.3",
+    "bluebird": "^3.7.2",
+    "body-parser": "^1.19.0",
+    "crypto": "^1.0.1",
+    "express": "^4.17.1",
+    "express-limiter": "^1.6.1",
+    "firebase-admin": "^9.3.0",
+    "fs": "0.0.1-security",
+    "goosepage": "0.0.1",
+    "http": "0.0.0",
+    "in-app-purchase": "^1.11.4",
+    "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.19",
+    "moment": "^2.27.0",
+    "mongoose": "^5.7.13",
+    "node-cron": "^2.0.3",
+    "node-gyp": "^6.1.0",
+    "node-pre-gyp": "^0.14.0",
+    "node-schedule": "^1.3.2",
+    "node-uuid": "^1.4.8",
+    "nodemailer": "^6.3.1",
+    "path": "^0.12.7",
+    "random-word-by-length": "^0.1.0",
+    "randomstring": "^1.1.5",
+    "redis": "^2.8.0",
+    "request": "^2.88.0",
+    "strong-password-generator": "^1.0.6",
+    "validator": "^12.1.0"
+  },
+  "devDependencies": {
+    "electron-rebuild": "^1.9.0"
   }
 }
