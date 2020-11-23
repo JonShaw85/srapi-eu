@@ -96,22 +96,21 @@ var Mode = {
     forceExpireGame: function (req, res) {
         var id = req.body.id
 
-        //Un comment below after US version goes live
-        // var TimeNowString = req.body.NowTime
+        var TimeNowString = req.body.NowTime
 
-        // console.log('[Force Expire Game] Expiring league with id: ' + id)
+        console.log('[Force Expire Game] Expiring league with id: ' + id)
 
-        // var clientTime = moment(TimeNowString)
-        // var maxServerTime = moment().utc().add(5, 'minutes')
-        // var minServerTime = moment().utc().subtract(5, 'minutes')
+        var clientTime = moment(TimeNowString)
+        var maxServerTime = moment().utc().add(5, 'minutes')
+        var minServerTime = moment().utc().subtract(5, 'minutes')
 
-        // var IsAfterServerTime = clientTime.isAfter(maxServerTime)
-        // var IsBeforeServerTime = clientTime.isBefore(minServerTime)
+        var IsAfterServerTime = clientTime.isAfter(maxServerTime)
+        var IsBeforeServerTime = clientTime.isBefore(minServerTime)
 
-        // if(IsAfterServerTime || IsBeforeServerTime) {
-        //     console.log('Force exipre league :: CHEATER -- dont force expire the league')
-        //     return res.status(400).send()
-        // }
+        if (IsAfterServerTime || IsBeforeServerTime) {
+            console.log('Force exipre league :: CHEATER -- dont force expire the league')
+            return res.status(400).send()
+        }
 
         console.log('Force exipre game :: Expiring game with id : ' + id)
 
