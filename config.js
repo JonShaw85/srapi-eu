@@ -1,8 +1,8 @@
 module.exports = {
 	'version': '1.01',
 	'gameVersion': '3', //old
-	'gameVersion_android': '12', // -1 in the code means up to date
-	'gameVersion_ios': '11', // -1 in the code means up to date
+	'gameVersion_android': '19', // -1 in the code means up to date
+	'gameVersion_ios': '19', // -1 in the code means up to date
 	'secret': 'iHateSuperbuff',
 	'database': 'mongodb://soccerrally:SuperBuffGames1982@ds035485.mongolab.com:35485/heroku_30fk6f9m',
 
@@ -29,5 +29,6 @@ module.exports = {
 
 	"lpBoostAmount": 15,
 	"winStreakBonus": 10,
-	"xpPerUnlock": 1500
+	"xpPerUnlock": 1500,
+	"forefitEloLoss": 40
 };
