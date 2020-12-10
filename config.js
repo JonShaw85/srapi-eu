@@ -1,7 +1,7 @@
 module.exports = {
 	'version': '1.01',
 	'gameVersion': '3', //old
-	'gameVersion_android': '19', // -1 in the code means up to date
+	'gameVersion_android': '28', // -1 in the code means up to date
 	'gameVersion_ios': '19', // -1 in the code means up to date
 	'secret': 'iHateSuperbuff',
 	'database': 'mongodb://soccerrally:SuperBuffGames1982@ds035485.mongolab.com:35485/heroku_30fk6f9m',
