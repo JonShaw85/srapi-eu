@@ -38,7 +38,7 @@ var Currency = {
        }
        else
        {
-         return res.status(500).send("WheelNotRefreshed");
+         return res.status(500).send("Failed to remove SRD");
        }
       })
     },

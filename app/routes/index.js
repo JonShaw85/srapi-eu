@@ -13,7 +13,7 @@ var config = require('./../../config');
 var highscoremode = require('../controllers/highscoremode');
 var playerleague = require('../controllers/playerleague')
 var leaderboard = require('./../controllers/leaderboard');
-const Currency = require('../controllers/currency');
+
 const Push = require('../controllers/PushNotification')
 var matchmaker = new Matchmaker;
 matchmaker.start();
