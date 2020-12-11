@@ -122,6 +122,11 @@ var Matchmaker = function () {
 		var winMulitplier = wonGame ? 1 : 0
 
 		var eloToAdd = baseMultiplier * (winMulitplier - winExpectancy)
+
+		if(wonGame && eloToAdd < config.minSrdGain) {
+			eloToAdd = config.minSrdGain
+		}
+
 		var newElo = playerEloNum + eloToAdd
 
 		console.log('[End Of Game Elo] Elo Calculations -- Username: ' + username + ' -----')
