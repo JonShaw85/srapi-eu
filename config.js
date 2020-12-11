@@ -32,5 +32,5 @@ module.exports = {
 	"xpPerUnlock": 1500,
 	"forefitEloLoss": 40,
 
-	"minSrdGain" : 5
+	"minSrdGain" : 10
 };
