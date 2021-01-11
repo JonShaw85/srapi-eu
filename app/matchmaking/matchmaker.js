@@ -376,6 +376,23 @@ var Matchmaker = function () {
 		})
 	}
 
+	this.giveforefitback = function (req, res) {
+		const username = req.body.username
+		console.log('Forefit Match: ' + username + ' User has got forefit back')
+
+		Auth.findUserByUsername(username).then((user) => {
+			if (!user) {
+				console.log('giving Forefit back Match Error: No User found with name: ' + username)
+				return res.status(400).send()
+			} else {
+				console.log('Forefit Match given back ' + config.forefitEloLoss + ' from ' + username)
+				user.elo += config.forefitEloLoss;
+				user.save()
+				return res.status(200).send()
+			}
+		})
+	}
+
 	this.createQueueDetails = function (userId, gametype) {
 
 	}

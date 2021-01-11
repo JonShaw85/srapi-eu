@@ -533,7 +533,7 @@ router.post('/match', matchmaker.queueAsTeam.bind(matchmaker))
 router.post('/match/threevthree', matchmaker.queueAsThreeVThree)
 router.post('/match/queue', matchmaker.queue)
 router.post('/match/forefit', matchmaker.forefitMatch)
-
+router.post('/match/giveforefitback', matchmaker.giveforefitback)
 
 
 /**
