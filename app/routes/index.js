@@ -749,7 +749,7 @@ router.post('/playerleague/claimelo', playerleague.claimElo)
 router.post('/playerleague/buylpboost', playerleague.buyLpBoost)
 router.post('/playerleague/buylpshield', playerleague.buyLpShield)
 router.post('/playerleague/expire', playerleague.forceExpireLeague)
-
+router.post('/playerleague/devStart', playerleague.devStart)
 
 Push.FireBaseInit();
 router.get('/PushNotification', Push.TestNotie)

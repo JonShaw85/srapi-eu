@@ -32,6 +32,7 @@ var League = {
             newLeague.expiryTime = expireTime
             newLeague.hasExpired = false
             newLeague.numPlayers = 1
+            newLeague.devLeague = false
             newLeague.players.push({
                 username: username,
                 elo: eloNum,
@@ -157,7 +158,7 @@ var League = {
         }
 
         //Attempt to find a game to join
-        return league.findOne({ $and: [{ numPlayers: { $lt: 100 } }, { hasExpired: false }] }, function (err, league) {
+        return league.findOne({ $and: [{ numPlayers: { $lt: 100 } }, { hasExpired: false }, { devLeague: false }] }, function (err, league) {
             //console.log('[Player League] Start Find One - Errors : ' + err + ' , league : ' + league)
 
             if (!league) {
@@ -435,6 +436,166 @@ var League = {
                 });
 
                 return res.status(200).json({ shieldCount: ShieldCount })
+            }
+        })
+    },
+
+    devStart: function (req, res) {
+        var username = req.body.username
+        var elo = req.body.elo
+        var eloNum = Number(elo)
+
+
+        console.log('[Player League] Player starting - ' + username + ' with elo - ' + elo)
+
+        var createNewLeague = function (username) {
+            console.log('[Player League] Create new league - ' + username)
+            var newLeague = new league()
+
+            var creationTime = moment().utc()
+            var expireTime = moment(creationTime).add(10, 'minutes').toDate()
+
+            var newId = uuid.v4()
+            newLeague.league_id = newId
+            newLeague.creationTime = creationTime
+            newLeague.expiryTime = expireTime
+            newLeague.hasExpired = false
+            newLeague.numPlayers = 1
+            newLeague.devLeague = true
+            newLeague.players.push({
+                username: username,
+                elo: eloNum,
+                lp: 0,
+                eloReward: 0,
+                xpReward: 0,
+                srdReward: 0,
+                isOnWinStreak: false,
+                ownsLpBoost: false,
+                ownsLpShield: false
+            })
+
+            var scheduleCronJobs = function (id) {
+
+                var expireDate = expireTime
+                console.log('[Player League] Schedule league expiry for game ' + id + ' at .. ' + expireDate)
+
+                /// REMOVE LEAGUE FROM DB AFTER 24 HOURS
+                var removeLeagueFromDb = function (leagueId) {
+
+                    var removeMeDate = moment().utc().add(1, 'hour').toDate()
+                    console.log('[Player League] Schedule deletion for league ' + leagueId + ' at ' + removeMeDate)
+
+                    var task = schedule.scheduleJob(removeMeDate, function (leagueId) {
+                        return league.deleteOne({ league_id: leagueId }, {}, function (err, result) {
+                            if (result) {
+                                console.log('[Player League] deleted game ' + leagueId)
+                            } else {
+                                console.log('[Player League] delete game ' + leagueId + ' no result')
+                            }
+                        })
+                    }.bind(null, leagueId))
+                }
+
+                //EXPIRE LEAGUE AFTER TIME
+                var task = schedule.scheduleJob(expireDate, function (id) {
+                    console.log('[Player League] - Expiring Game: ' + id)
+
+                    return league.findOneAndUpdate({ league_id: id }, {}, function (err, result) {
+                        if (result) {
+                            result.hasExpired = true
+                            result.players.sort((a, b) => (a.lp < b.lp) ? 1 : -1)
+
+                            //Loop through players and set rewards
+                            for (let i = 0; i < result.players.length; i++) {
+                                const player = result.players[i];
+
+                                var finishingPosition = i + 1
+                                var eloReward = Utils.calculateEloReward(player.elo, finishingPosition)
+                                var xpReward = Utils.calculateXpReward(finishingPosition)
+                                var srdReward = Utils.calculateSrdReward(finishingPosition)
+
+                                console.log('[Player League] Elo reward for ' + player.username + ' is ' + eloReward)
+
+                                player.eloReward = eloReward
+                                player.xpReward = xpReward
+                                player.srdReward = srdReward
+                            }
+
+                            result.save()
+                            //Call to remove the league from DB after 24 hours
+                            removeLeagueFromDb(id)
+
+                        } else {
+                            console.log('[Player League] league not found.. ' + id)
+                        }
+                    })
+                }.bind(null, id))
+            }
+
+            //Schedule game expiry
+            scheduleCronJobs(newId)
+
+            newLeague.save()
+
+            console.log('[Player League] Created league! - ' + newId)
+            const notification = notifications.refreshedLeagueState
+            notification.league = newLeague
+            notification.league_id = newId
+
+            return res.status(200).json(notification)
+        }
+
+        var joinLeague = function (league, username, elo) {
+            console.log('[Player League] Joining league - ' + league.league_id + ' adding username ' + username)
+
+            var playerAlreadyInLeague = false
+
+            league.players.forEach(player => {
+                if (player.username === username) {
+                    playerAlreadyInLeague = true
+                }
+            });
+
+            //Only add the player to the league if they arent already in there, if not just send the league reference back
+            if (!playerAlreadyInLeague) {
+                league.players.push({
+                    username: username,
+                    elo: elo,
+                    lp: 0,
+                    eloReward: 0,
+                    xpReward: 0,
+                    srdReward: 0,
+                    isOnWinStreak: false,
+                    ownsLpBoost: false,
+                    ownsLpShield: false
+                })
+
+                league.numPlayers = league.numPlayers + 1
+            }
+
+            if (league.players.length > 1) {
+                league.players.sort((a, b) => (a.lp < b.lp) ? 1 : -1)
+            }
+
+            league.save()
+
+            const notification = notifications.refreshedLeagueState
+            notification.league = league
+            notification.league_id = league.league_id
+
+            return res.status(200).json(notification)
+        }
+
+        //Attempt to find a game to join
+        return league.findOne({ $and: [{ numPlayers: { $lt: 100 } }, { hasExpired: false }, { devLeague: true }] }, function (err, league) {
+            //console.log('[Player League] Start Find One - Errors : ' + err + ' , league : ' + league)
+
+            if (!league) {
+                //Create a league
+                return createNewLeague(username)
+            } else {
+                //Join existing league 
+                return joinLeague(league, username, eloNum)
             }
         })
     }

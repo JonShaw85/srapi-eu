@@ -74,6 +74,11 @@ const leagueSchema = new mongoose.Schema({
     },
     expiryTime: {
         type: Date
+    },
+    devLeague: {
+        type: Boolean,
+        'default': false,
+        required: true
     }
 })
 
