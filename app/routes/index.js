@@ -750,6 +750,8 @@ router.post('/playerleague/buylpboost', playerleague.buyLpBoost)
 router.post('/playerleague/buylpshield', playerleague.buyLpShield)
 router.post('/playerleague/expire', playerleague.forceExpireLeague)
 router.post('/playerleague/devStart', playerleague.devStart)
+router.post('/playerleague/devExpire', playerleague.devExpire)
+
 
 Push.FireBaseInit();
 router.get('/PushNotification', Push.TestNotie)

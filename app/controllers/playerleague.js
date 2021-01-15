@@ -598,6 +598,57 @@ var League = {
                 return joinLeague(league, username, eloNum)
             }
         })
+    },
+
+    devExpire: function (req, res) {
+        var leagueId = req.body.leagueId
+
+        var removeLeagueFromDb = function (leagueId) {
+
+            var removeMeDate = moment().utc().add(1, 'hour').toDate() //Remove after 24 hours
+            console.log('[Player League] Schedule deletion for league ' + leagueId + ' at ' + removeMeDate)
+
+            var task = schedule.scheduleJob(removeMeDate, function (leagueId) {
+                return league.deleteOne({ league_id: leagueId }, {}, function (err, result) {
+                    if (result) {
+                        console.log('[Player League] deleted game ' + leagueId)
+                    } else {
+                        console.log('[Player League] delete game ' + leagueId + ' no result')
+                    }
+                })
+            }.bind(null, leagueId))
+        }
+
+        league.findOneAndUpdate({ league_id: leagueId }, {}, function (error, result) {
+            if (result) {
+                result.hasExpired = true
+                result.players.sort((a, b) => (a.lp < b.lp) ? 1 : -1)
+
+                //Loop through players and set rewards
+                for (let i = 0; i < result.players.length; i++) {
+                    const player = result.players[i];
+
+                    var finishingPosition = i + 1
+                    var eloReward = Utils.calculateEloReward(player.elo, finishingPosition)
+                    var xpReward = Utils.calculateXpReward(finishingPosition)
+                    var srdReward = Utils.calculateSrdReward(finishingPosition)
+
+                    console.log('[Player League] Elo reward for ' + player.username + ' is ' + eloReward)
+                    player.eloReward = eloReward
+                    player.xpReward = xpReward
+                    player.srdReward = srdReward;
+                }
+
+                result.save()
+                //Call to remove the league from DB after 24 hours
+                removeLeagueFromDb(leagueId)
+                return res.status(200).send('success')
+
+            } else if (error) {
+                console.log('[Force Expire League] Error ' + error)
+                return res.status(500).json({ Error: error })
+            }
+        })
     }
 }
 
