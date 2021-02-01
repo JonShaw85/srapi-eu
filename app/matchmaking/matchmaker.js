@@ -159,7 +159,12 @@ var Matchmaker = function () {
 						lpResult += config.winStreakBonus
 					}
 				}
-
+				if(newElo <= 0)
+				{
+					console.log("NEW ELO IF <= 0  "+newElo)
+					newElo = 0
+				}
+				
 				user.elo = newElo
 				user.srd += srd
 				user.xp += xp
@@ -362,14 +367,21 @@ var Matchmaker = function () {
 	this.forefitMatch = function (req, res) {
 		const username = req.body.username
 		console.log('Forefit Match: ' + username + ' has forefit the match')
-
+		const rp = Number(req.body.rp)
+		
 		Auth.findUserByUsername(username).then((user) => {
 			if (!user) {
 				console.log('Forefit Match Error: No User found with name: ' + username)
 				return res.status(400).send()
 			} else {
+				if(isNaN(rp))
+				{
+					rp = config.forefitEloLoss;
+				}
+
 				console.log('Forefit Match: Taken ' + config.forefitEloLoss + ' from ' + username)
-				user.elo -= config.forefitEloLoss;
+				
+				user.elo -= rp;
 				user.save()
 				return res.status(200).send()
 			}
@@ -379,14 +391,14 @@ var Matchmaker = function () {
 	this.giveforefitback = function (req, res) {
 		const username = req.body.username
 		console.log('Forefit Match: ' + username + ' User has got forefit back')
-
+		const Srd = Number(req.body.srd)
 		Auth.findUserByUsername(username).then((user) => {
 			if (!user) {
 				console.log('giving Forefit back Match Error: No User found with name: ' + username)
 				return res.status(400).send()
 			} else {
 				console.log('Forefit Match given back ' + config.forefitEloLoss + ' from ' + username)
-				user.elo += config.forefitEloLoss;
+				user.elo += Srd;
 				user.save()
 				return res.status(200).send()
 			}
