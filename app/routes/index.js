@@ -451,7 +451,8 @@ router.put('/profile/stats', profile.setStats);
 router.get('/profile/:id', profile.get);
 router.get('/profile/:username/byname', profile.getByName);
 router.get('/profile/:id/elo', profile.getElo);
-
+router.post('/profile/GetCarLevel', profile.getCarLevel);
+router.post('/profile/SetCarLevel', profile.setCarLevel);
 /**
  * @api {get} /leaderboard Get Leaderboard
  * @apiName Get Leaderboard
@@ -749,6 +750,8 @@ router.post('/playerleague/claimelo', playerleague.claimElo)
 router.post('/playerleague/buylpboost', playerleague.buyLpBoost)
 router.post('/playerleague/buylpshield', playerleague.buyLpShield)
 router.post('/playerleague/expire', playerleague.forceExpireLeague)
+router.post('/playerleague/devStart', playerleague.devStart)
+router.post('/playerleague/devExpire', playerleague.devExpire)
 
 
 Push.FireBaseInit();

@@ -4,6 +4,15 @@ mongoose.Promise = Promise;
 var bcrypt = Promise.promisifyAll(require('bcryptjs'));
 var Schema = mongoose.Schema;
 
+const carLevel = new Schema({
+	carName : {
+		type : String,
+	},
+	level : {
+		type : Number
+	}
+})
+
 const highscoreresultSchema = new Schema({
 
     game_id : {
@@ -121,6 +130,9 @@ var UserSchema = new Schema({
     fireBaseToken : {
 		type : String,
 		'default' : '',
+	},
+	carLevels : {
+		type : [carLevel]
 	}
 });
 

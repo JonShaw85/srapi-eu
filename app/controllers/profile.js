@@ -10,7 +10,7 @@ const methods = require('./methods/profile');
 const errors = require('./messages/errors');
 const notifications = require('./messages/notifications');
 const leaderboard = require('./leaderboard') 
-
+const Auth = require('./methods/auth')
 var paths = {
 	setStats : function(req, res) {
         console.log("[setStats]"); 
@@ -28,17 +28,15 @@ var paths = {
 		});
 	},
 	get : async function(req, res) {
-        //console.log("[profile:get................]"); 
+        //console.log("[profile:get]"); 
 		await methods.findUserById(req.params.id).then(function(user_model) {
 			
 			if(!user_model){
-				console.log('FAILED............')
-				return new User();  				
+				return new User();  
 			}
 
 			//Find matches last 48 hours
 			var user = user_model.toObject();
-			console.log('PROFILE GET......'+ JSON.stringify(user))
 			return Promise.resolve(user);
 			
 		}).then(function(user){
@@ -100,6 +98,72 @@ var paths = {
 		}).then(function(result) {
 			return res.json(result);
 		});
+	},
+
+	getCarLevel : function(req, res) 
+	{
+		try
+		{
+			let username = req.body.username; 
+			let name = req.body.carName; 
+			Auth.findUserByUsername(username).then((user) => {
+				if(!user)
+				{
+					console.log("username not found for car")
+					return res.status(500).send('User not found')
+				}
+				let foundCar = false
+				let level = 0;
+				let cars = user.carLevels				
+				cars.forEach(carLevel => {
+					if(carLevel.carName == name) 
+					{
+						foundCar = true
+						level = carLevel.level
+						console.log("CAR FOUND  " + name + level)
+					}
+				});
+				if(!foundCar)
+				{
+					if(!cars.includes(name))
+					{
+						cars.push({carName : name, level : 0})
+						console.log("CAR NOT FOUND  " + name)
+					}
+					
+				}
+				user.carLevels = cars
+				user.save()
+				console.log("GETTING LEVEL" + level)
+				return res.status(200).send({"carLevel" : level})
+			})
+		}
+		catch(e)
+		{
+			console.log("Caught error ---" + e)
+			return res.status(500).send()
+		}
+	},
+
+	setCarLevel : function(req, res) {
+		const username = req.body.username; 
+		const carName = req.body.carName; 
+
+		Auth.findUserByUsername(username).then((user) => {
+			
+			if(!user) {
+				return res.status(500).send('User not found')
+			}
+			let cars = user.carLevels
+			
+			cars.forEach(carLevel => {
+				if(carLevel.carName == carName) {
+					carLevel.level++
+				}
+			});
+            user.save()
+			return res.status(200).send()
+		})
 	}
 };
 
