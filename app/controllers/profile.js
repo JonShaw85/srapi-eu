@@ -106,6 +106,8 @@ var paths = {
 		{
 			let username = req.body.username; 
 			let name = req.body.carName; 
+			let OverrideCarLevel = req.body.OverrideCarLevel;
+            OverrideCarLevel = Number(OverrideCarLevel);
 			Auth.findUserByUsername(username).then((user) => {
 				if(!user)
 				{
@@ -127,7 +129,7 @@ var paths = {
 				{
 					if(!cars.includes(name))
 					{
-						cars.push({carName : name, level : 0})
+						cars.push({carName : name, level : OverrideCarLevel})
 						console.log("CAR NOT FOUND  " + name)
 					}
 					
