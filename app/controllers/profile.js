@@ -166,6 +166,28 @@ var paths = {
             user.save()
 			return res.status(200).send()
 		})
+	},
+	resetCalLevels : function(req, res) {
+		const username = req.body.username; 
+		const carName = req.body.carName; 
+		let OverrideCarLevel = req.body.OverrideCarLevel;
+        OverrideCarLevel = Number(OverrideCarLevel);
+
+		Auth.findUserByUsername(username).then((user) => {
+			
+			if(!user) {
+				return res.status(500).send('User not found')
+			}
+			let cars = user.carLevels
+			
+			cars.forEach(carLevel => {
+				if(carLevel.carName == carName) {
+					carLevel.level = OverrideCarLevel
+				}
+			});
+            user.save()
+			return res.status(200).send()
+		})
 	}
 };
 
