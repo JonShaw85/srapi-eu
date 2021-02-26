@@ -57,25 +57,25 @@ const XPPercentageIncrease = {
 
 const srdIncrease = {
     1: {
-        amount: 50000
-    },
-    13: {
         amount: 30000
     },
-    310: {
+    13: {
         amount: 20000
     },
-    1020: {
-        amount: 10000
+    310: {
+        amount: 8000    
     },
-    2050: {
+    1020: {
         amount: 5000
     },
-    5080: {
+    2050: {
         amount: 2500
     },
+    5080: {
+        amount: 1500
+    },
     80100: {
-        amount: 1250
+        amount: 1000
     },
 }
 
