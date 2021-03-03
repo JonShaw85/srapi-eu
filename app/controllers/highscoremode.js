@@ -299,13 +299,13 @@ var Mode = {
 
                                     //Calculate srd reward based on finshing position
                                     if (finishPos <= 1) {
-                                        srd_reward = 10000
+                                        srd_reward = 8000
                                         xp_reward = 500
                                     } else if (finishPos < 4) {
-                                        srd_reward = 8000
+                                        srd_reward = 4000
                                         xp_reward = 350
                                     } else if (finishPos < 7) {
-                                        srd_reward = 3000
+                                        srd_reward = 2000
                                         xp_reward = 250
                                     } else if (finishPos < 11) {
                                         srd_reward = 1000
