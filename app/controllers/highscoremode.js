@@ -231,7 +231,7 @@ var Mode = {
             var ScheduleCronJob = function (expire_id) {
                 var jobDate = new Date(Date.now() + (24 * 60 * 60000)); //expire after 10 hrs - If you want 10 mins ---> (1*10*60000)); <--- ::: //10 hours ---> (10*60*60000)) <--- 
 
-                console.log('ScheduleCronJob for EXPIRY game ' + expire_id + " at .. " + jobDate);
+                console.log('ScheduleCronJob for EXPIRY game ' + expire_id + "Date Now: " + new Date(Date.now()) +" at .. " + jobDate);
 
                 var RemoveGameFromDB = function (game_id) {
                     var removeMeDate = new Date(Date.now() + (24 * 60 * 60000)); //remove after 24 hrs
