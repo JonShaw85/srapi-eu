@@ -28,7 +28,7 @@ var paths = {
             Auth.findUserByUsername(username).then((user) => {
             
                 
-            
+                return res.status(200).send({})
             })
         }
         catch(e) {
