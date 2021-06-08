@@ -13,6 +13,15 @@ const carLevel = new Schema({
 	}
 })
 
+const skillsState = new Schema({
+	skillJsonKey : {
+		type: String
+	},
+	unlocked : {
+		type : Boolean
+	}
+})
+
 const highscoreresultSchema = new Schema({
 
     game_id : {
@@ -133,6 +142,9 @@ var UserSchema = new Schema({
 	},
 	carLevels : {
 		type : [carLevel]
+	},
+	skillsStates : {
+		type: [skillsState]
 	}
 });
 
