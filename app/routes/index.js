@@ -756,7 +756,7 @@ router.post('/playerleague/devStart', playerleague.devStart)
 router.post('/playerleague/devExpire', playerleague.devExpire)
 
 /* Skills */
-router.post('/Skills/GetSkillsLockState', skills.GetSkillsLockState)
+router.get('/Skills/GetSkillsLockState', skills.GetSkillsLockState)
 router.post('/Skills/SetSkillsLockState', skills.SetSkillsLockState)
 
 Push.FireBaseInit();

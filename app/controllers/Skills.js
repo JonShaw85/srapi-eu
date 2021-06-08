@@ -7,10 +7,14 @@ var paths = {
     GetSkillsLockState: function (req, res) {
         try {
             let username = req.body.username; 
-            Auth.findUserByUsername(username).then((user) => {
+            Auth.findUserByUsername(username).then((user) => {    	
+			if(!user) {
+				return res.status(500).send('User not found')
+			}
             
 
-            
+
+                return res.status(200).send({})
             })
         }
         catch(e) {
