@@ -78,7 +78,6 @@ var paths = {
 			return res.status(err.code).json(err);
 		});
 	},
-
 	leaderboard : async function(req, res) {
 		console.log('Leaderboard :: Returning all leaderboard users')
 		try {
@@ -188,6 +187,51 @@ var paths = {
             user.save()
 			return res.status(200).send()
 		})
+	},
+	resetSkills : function(req, res) {
+		try
+		{
+			let username = req.body.username; 
+			let name = req.body.carName; 
+			let OverrideCarLevel = req.body.OverrideCarLevel;
+            OverrideCarLevel = Number(OverrideCarLevel);
+			Auth.findUserByUsername(username).then((user) => {
+				if(!user)
+				{
+					console.log("username not found for car")
+					return res.status(500).send('User not found')
+				}
+				let foundCar = false
+				let level = 0;
+				let cars = user.carLevels				
+				cars.forEach(carLevel => {
+					if(carLevel.carName == name) 
+					{
+						foundCar = true
+						level = carLevel.level
+						console.log("CAR FOUND  " + name + level)
+					}
+				});
+				if(!foundCar)
+				{
+					if(!cars.includes(name))
+					{
+						cars.push({carName : name, level : OverrideCarLevel})
+						console.log("CAR NOT FOUND  " + name)
+					}
+					
+				}
+				user.carLevels = cars
+				user.save()
+				console.log("GETTING LEVEL" + level)
+				return res.status(200).send({"carLevel" : level})
+			})
+		}
+		catch(e)
+		{
+			console.log("Caught error ---" + e)
+			return res.status(500).send()
+		}
 	}
 };
 

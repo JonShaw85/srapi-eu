@@ -3,7 +3,7 @@ var router = new express.Router();
 var auth = require('../controllers/auth');
 var friends = require('../controllers/friends');
 var profile = require('../controllers/profile');
-var skills = require('../controllers/Skills');
+var skills = require('../controllers/skills');
 var Matchmaker = require('../matchmaking/matchmaker');
 var currency = require('../controllers/currency');
 var limited = require('../controllers/limited');
@@ -756,8 +756,12 @@ router.post('/playerleague/devStart', playerleague.devStart)
 router.post('/playerleague/devExpire', playerleague.devExpire)
 
 /* Skills */
-router.get('/Skills/GetSkillsLockState', skills.GetSkillsLockState)
-router.post('/Skills/SetSkillsLockState', skills.SetSkillsLockState)
+router.get('/skills/getskilllockstate', skills.getSkillsLockState)
+router.post('/skills/setskilllockstatepost', skills.SetSkillsLockState)
+router.get('/skills/setskilllockstate', skills.SetSkillsLockState)
+router.post('/profile/resetSkills', profile.resetSkills)
+//router.post('/profile/GetCarLevel', profile.getCarLevel);
+
 
 Push.FireBaseInit();
 router.get('/PushNotification', Push.TestNotie)

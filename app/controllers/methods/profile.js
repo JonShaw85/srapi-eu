@@ -5,7 +5,7 @@ var User 		= require('./../../models/user');
 var methods = {
 	findUserById : function(id){
 		return User.findById( id )
-		.select('username _id statistics level experience elo wins matches goals bestHighscore')
+		.select('username _id statistics level experience elo wins matches goals')
 		.exec()
 		.then( function(user){
 			return new Promise(function(resolve, reject){
